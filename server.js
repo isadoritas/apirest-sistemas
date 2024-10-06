@@ -1,9 +1,11 @@
 import { PrismaClient } from '@prisma/client'
+import cors from 'cors'
 import express from 'express'
 
 const prisma = new PrismaClient()
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 
 app.post('/usuarios', async (request, response) => {
@@ -20,8 +22,8 @@ app.post('/usuarios', async (request, response) => {
 })
 
 app.get('/usuarios', async (request, response) => {
-  
   let users = []
+
   if(request.query) {
     users = await prisma.user.findMany({
       where: {
@@ -33,8 +35,8 @@ app.get('/usuarios', async (request, response) => {
 
   } else {
     const users = await prisma.user.findMany()
-    response.status(200).json(users)
   }
+  response.status(200).json(users)
 })
 
 app.put('/usuarios/:id', async (request, response) => {
@@ -65,6 +67,6 @@ app.delete('/usuarios/:id', async (request, response) => {
 })
 
 
-app.listen(5000)
+app.listen(3000)
 
 // mongo - user: isadora senha: isadora123
